@@ -58,15 +58,15 @@ func (exa *CustomerService) GetCustomer(id uint) (err error, customer example.Cu
 //@author: Flame
 //@function: GetCustomerInfoList
 //@description: 分页获取客户列表
-//@param: sysUserAuthorityID string, info request.PageInfo
+//@param: UserAuthorityID string, info request.PageInfo
 //@return: err error, list interface{}, total int64
 
-func (exa *CustomerService) GetCustomerInfoList(sysUserAuthorityID string, info request.PageInfo) (err error, list interface{}, total int64) {
+func (exa *CustomerService) GetCustomerInfoList(UserAuthorityID string, info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	db := global.DB.Model(&example.Customer{})
 	var a system.Authority
-	a.AuthorityId = sysUserAuthorityID
+	a.AuthorityId = UserAuthorityID
 	err, auth := systemService.AuthorityServiceApp.GetAuthorityInfo(a)
 	var dataId []string
 	for _, v := range auth.DataAuthorityId {

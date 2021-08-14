@@ -132,9 +132,9 @@ func (b *Base) Register(c *gin.Context) {
 	err, userReturn := userService.Register(*user)
 	if err != nil {
 		global.LOG.Error("注册失败!", zap.Any("err", err))
-		response.FailWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册失败", c)
+		response.FailWithDetailed(systemRes.UserResponse{User: userReturn}, "注册失败", c)
 	} else {
-		response.OkWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册成功", c)
+		response.OkWithDetailed(systemRes.UserResponse{User: userReturn}, "注册成功", c)
 	}
 }
 

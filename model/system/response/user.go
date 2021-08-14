@@ -4,7 +4,7 @@ import (
 	"gin-starter/model/system"
 )
 
-type SysUserResponse struct {
+type UserResponse struct {
 	User system.User `json:"user"`
 }
 

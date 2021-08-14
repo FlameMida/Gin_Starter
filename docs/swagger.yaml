@@ -281,18 +281,18 @@ definitions:
       id:
         description: 主键ID
         type: integer
-      sysUser:
-        $ref: '#/definitions/system.SysUser'
-        description: 管理详情
-      sysUserAuthorityID:
-        description: 管理角色ID
-        type: string
-      sysUserId:
-        description: 管理ID
-        type: integer
       updatedAt:
         description: 更新时间
         type: string
+      user:
+        $ref: '#/definitions/system.User'
+        description: 管理详情
+      userAuthorityID:
+        description: 管理角色ID
+        type: string
+      userId:
+        description: 管理ID
+        type: integer
     type: object
   example.ExcelInfo:
     properties:
@@ -301,7 +301,7 @@ definitions:
         type: string
       infoList:
         items:
-          $ref: '#/definitions/system.SysBaseMenu'
+          $ref: '#/definitions/system.BaseMenu'
         type: array
     type: object
   example.FileTransfer:
@@ -335,7 +335,7 @@ definitions:
         type: string
       menus:
         items:
-          $ref: '#/definitions/system.SysBaseMenu'
+          $ref: '#/definitions/system.BaseMenu'
         type: array
     type: object
   request.CasbinInReceive:
@@ -471,7 +471,7 @@ definitions:
         description: 更新时间
         type: string
       user:
-        $ref: '#/definitions/system.SysUser'
+        $ref: '#/definitions/system.User'
       user_id:
         description: 用户id
         type: integer
@@ -557,9 +557,148 @@ definitions:
   response.SysAuthorityCopyResponse:
     properties:
       authority:
-        $ref: '#/definitions/system.SysAuthority'
+        $ref: '#/definitions/system.Authority'
       oldAuthorityId:
         description: 旧角色ID
+        type: string
+    type: object
+  system.Api:
+    properties:
+      apiGroup:
+        description: api组
+        type: string
+      createdAt:
+        description: 创建时间
+        type: string
+      description:
+        description: api中文描述
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      method:
+        description: 方法:创建POST(默认)|查看GET|更新PUT|删除DELETE
+        type: string
+      path:
+        description: api路径
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
+  system.Authority:
+    properties:
+      authorityId:
+        description: 角色ID
+        type: string
+      authorityName:
+        description: 角色名
+        type: string
+      children:
+        items:
+          $ref: '#/definitions/system.Authority'
+        type: array
+      createdAt:
+        description: 创建时间
+        type: string
+      dataAuthorityId:
+        items:
+          $ref: '#/definitions/system.Authority'
+        type: array
+      defaultRouter:
+        description: 默认菜单(默认dashboard)
+        type: string
+      deletedAt:
+        type: string
+      menus:
+        items:
+          $ref: '#/definitions/system.BaseMenu'
+        type: array
+      parentId:
+        description: 父角色ID
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
+  system.BaseMenu:
+    properties:
+      authorities:
+        items:
+          $ref: '#/definitions/system.Authority'
+        type: array
+      children:
+        items:
+          $ref: '#/definitions/system.BaseMenu'
+        type: array
+      closeTab:
+        description: 自动关闭tab
+        type: boolean
+      component:
+        description: 对应前端文件路径
+        type: string
+      createdAt:
+        description: 创建时间
+        type: string
+      defaultMenu:
+        description: 是否是基础路由（开发中）
+        type: boolean
+      hidden:
+        description: 是否在列表隐藏
+        type: boolean
+      icon:
+        description: 菜单图标
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      keepAlive:
+        description: 是否缓存
+        type: boolean
+      name:
+        description: 路由name
+        type: string
+      parameters:
+        items:
+          $ref: '#/definitions/system.BaseMenuParameter'
+        type: array
+      parentId:
+        description: 父菜单ID
+        type: string
+      path:
+        description: 路由path
+        type: string
+      sort:
+        description: 排序标记
+        type: integer
+      title:
+        description: 菜单名
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+    type: object
+  system.BaseMenuParameter:
+    properties:
+      baseMenuID:
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键ID
+        type: integer
+      key:
+        description: 地址栏携带参数的key
+        type: string
+      type:
+        description: 地址栏携带参数为params还是query
+        type: string
+      updatedAt:
+        description: 更新时间
+        type: string
+      value:
+        description: 地址栏携带参数的值
         type: string
     type: object
   system.Operations:
@@ -601,172 +740,38 @@ definitions:
         description: 更新时间
         type: string
       user:
-        $ref: '#/definitions/system.SysUser'
+        $ref: '#/definitions/system.User'
       user_id:
         description: 用户id
         type: integer
     type: object
-  system.SysApi:
+  system.System:
     properties:
-      apiGroup:
-        description: api组
-        type: string
-      createdAt:
-        description: 创建时间
-        type: string
-      description:
-        description: api中文描述
-        type: string
-      id:
-        description: 主键ID
-        type: integer
-      method:
-        description: 方法:创建POST(默认)|查看GET|更新PUT|删除DELETE
-        type: string
-      path:
-        description: api路径
-        type: string
-      updatedAt:
-        description: 更新时间
-        type: string
+      config:
+        $ref: '#/definitions/config.Server'
     type: object
-  system.SysAuthority:
-    properties:
-      authorityId:
-        description: 角色ID
-        type: string
-      authorityName:
-        description: 角色名
-        type: string
-      children:
-        items:
-          $ref: '#/definitions/system.SysAuthority'
-        type: array
-      createdAt:
-        description: 创建时间
-        type: string
-      dataAuthorityId:
-        items:
-          $ref: '#/definitions/system.SysAuthority'
-        type: array
-      defaultRouter:
-        description: 默认菜单(默认dashboard)
-        type: string
-      deletedAt:
-        type: string
-      menus:
-        items:
-          $ref: '#/definitions/system.SysBaseMenu'
-        type: array
-      parentId:
-        description: 父角色ID
-        type: string
-      updatedAt:
-        description: 更新时间
-        type: string
-    type: object
-  system.SysBaseMenu:
-    properties:
-      authorities:
-        items:
-          $ref: '#/definitions/system.SysAuthority'
-        type: array
-      children:
-        items:
-          $ref: '#/definitions/system.SysBaseMenu'
-        type: array
-      closeTab:
-        description: 自动关闭tab
-        type: boolean
-      component:
-        description: 对应前端文件路径
-        type: string
-      createdAt:
-        description: 创建时间
-        type: string
-      defaultMenu:
-        description: 是否是基础路由（开发中）
-        type: boolean
-      hidden:
-        description: 是否在列表隐藏
-        type: boolean
-      icon:
-        description: 菜单图标
-        type: string
-      id:
-        description: 主键ID
-        type: integer
-      keepAlive:
-        description: 是否缓存
-        type: boolean
-      name:
-        description: 路由name
-        type: string
-      parameters:
-        items:
-          $ref: '#/definitions/system.SysBaseMenuParameter'
-        type: array
-      parentId:
-        description: 父菜单ID
-        type: string
-      path:
-        description: 路由path
-        type: string
-      sort:
-        description: 排序标记
-        type: integer
-      title:
-        description: 菜单名
-        type: string
-      updatedAt:
-        description: 更新时间
-        type: string
-    type: object
-  system.SysBaseMenuParameter:
-    properties:
-      createdAt:
-        description: 创建时间
-        type: string
-      id:
-        description: 主键ID
-        type: integer
-      key:
-        description: 地址栏携带参数的key
-        type: string
-      sysBaseMenuID:
-        type: integer
-      type:
-        description: 地址栏携带参数为params还是query
-        type: string
-      updatedAt:
-        description: 更新时间
-        type: string
-      value:
-        description: 地址栏携带参数的值
-        type: string
-    type: object
-  system.SysUser:
+  system.User:
     properties:
       activeColor:
         description: 活跃颜色
         type: string
       authorities:
         items:
-          $ref: '#/definitions/system.SysAuthority'
+          $ref: '#/definitions/system.Authority'
         type: array
       authority:
-        $ref: '#/definitions/system.SysAuthority'
+        $ref: '#/definitions/system.Authority'
       authorityId:
         description: 用户角色ID
+        type: string
+      avatar:
+        description: 用户头像
         type: string
       baseColor:
         description: 基础颜色
         type: string
       createdAt:
         description: 创建时间
-        type: string
-      avatar:
-        description: 用户头像
         type: string
       id:
         description: 主键ID
@@ -786,11 +791,6 @@ definitions:
       uuid:
         description: 用户UUID
         type: string
-    type: object
-  system.System:
-    properties:
-      config:
-        $ref: '#/definitions/config.Server'
     type: object
 info:
   contact: {}
@@ -870,7 +870,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysApi'
+          $ref: '#/definitions/system.Api'
       produces:
       - application/json
       responses:
@@ -882,7 +882,7 @@ paths:
       - ApiKeyAuth: []
       summary: 创建基础api
       tags:
-      - SysApi
+      - Api
   /api/deleteApi:
     post:
       consumes:
@@ -893,7 +893,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysApi'
+          $ref: '#/definitions/system.Api'
       produces:
       - application/json
       responses:
@@ -905,7 +905,7 @@ paths:
       - ApiKeyAuth: []
       summary: 删除api
       tags:
-      - SysApi
+      - Api
   /api/deleteApisByIds:
     delete:
       consumes:
@@ -928,7 +928,7 @@ paths:
       - ApiKeyAuth: []
       summary: 删除选中Api
       tags:
-      - SysApi
+      - Api
   /api/getAllApis:
     post:
       consumes:
@@ -944,7 +944,7 @@ paths:
       - ApiKeyAuth: []
       summary: 获取所有的Api 不分页
       tags:
-      - SysApi
+      - Api
   /api/getApiById:
     post:
       consumes:
@@ -967,7 +967,7 @@ paths:
       - ApiKeyAuth: []
       summary: 根据id获取api
       tags:
-      - SysApi
+      - Api
   /api/getApiList:
     post:
       consumes:
@@ -990,7 +990,7 @@ paths:
       - ApiKeyAuth: []
       summary: 分页获取API列表
       tags:
-      - SysApi
+      - Api
   /api/updateApi:
     post:
       consumes:
@@ -1001,7 +1001,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysApi'
+          $ref: '#/definitions/system.Api'
       produces:
       - application/json
       responses:
@@ -1013,7 +1013,7 @@ paths:
       - ApiKeyAuth: []
       summary: 创建基础api
       tags:
-      - SysApi
+      - Api
   /authority/copyAuthority:
     post:
       consumes:
@@ -1047,7 +1047,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysAuthority'
+          $ref: '#/definitions/system.Authority'
       produces:
       - application/json
       responses:
@@ -1070,7 +1070,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysAuthority'
+          $ref: '#/definitions/system.Authority'
       produces:
       - application/json
       responses:
@@ -1116,7 +1116,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysAuthority'
+          $ref: '#/definitions/system.Authority'
       produces:
       - application/json
       responses:
@@ -1139,7 +1139,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysAuthority'
+          $ref: '#/definitions/system.Authority'
       produces:
       - application/json
       responses:
@@ -1378,7 +1378,7 @@ paths:
       - ApiKeyAuth: []
       summary: 下载模板
       tags:
-      - excel
+      - Excel
   /excel/exportExcel:
     post:
       consumes:
@@ -1399,7 +1399,7 @@ paths:
       - ApiKeyAuth: []
       summary: 导出Excel
       tags:
-      - excel
+      - Excel
   /excel/importExcel:
     post:
       consumes:
@@ -1421,7 +1421,7 @@ paths:
       - ApiKeyAuth: []
       summary: 导入Excel文件
       tags:
-      - excel
+      - Excel
   /excel/loadExcel:
     get:
       produces:
@@ -1435,7 +1435,7 @@ paths:
       - ApiKeyAuth: []
       summary: 加载Excel数据
       tags:
-      - excel
+      - Excel
   /fileTransfer/breakpointContinue:
     post:
       consumes:
@@ -1648,7 +1648,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysBaseMenu'
+          $ref: '#/definitions/system.BaseMenu'
       produces:
       - application/json
       responses:
@@ -1805,7 +1805,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysBaseMenu'
+          $ref: '#/definitions/system.BaseMenu'
       produces:
       - application/json
       responses:
@@ -2016,7 +2016,7 @@ paths:
       - ApiKeyAuth: []
       summary: 用户修改密码
       tags:
-      - SysUser
+      - User
   /user/deleteUser:
     delete:
       consumes:
@@ -2039,7 +2039,7 @@ paths:
       - ApiKeyAuth: []
       summary: 删除用户
       tags:
-      - SysUser
+      - User
   /user/getUserInfo:
     get:
       consumes:
@@ -2055,7 +2055,7 @@ paths:
       - ApiKeyAuth: []
       summary: 获取用户信息
       tags:
-      - SysUser
+      - User
   /user/getUserList:
     post:
       consumes:
@@ -2078,7 +2078,7 @@ paths:
       - ApiKeyAuth: []
       summary: 分页获取用户列表
       tags:
-      - SysUser
+      - User
   /user/register:
     post:
       parameters:
@@ -2097,7 +2097,7 @@ paths:
             type: string
       summary: 用户注册账号
       tags:
-      - SysUser
+      - User
   /user/setUserAuthorities:
     post:
       consumes:
@@ -2120,7 +2120,7 @@ paths:
       - ApiKeyAuth: []
       summary: 设置用户权限
       tags:
-      - SysUser
+      - User
   /user/setUserAuthority:
     post:
       consumes:
@@ -2143,7 +2143,7 @@ paths:
       - ApiKeyAuth: []
       summary: 更改用户权限
       tags:
-      - SysUser
+      - User
   /user/setUserInfo:
     put:
       consumes:
@@ -2154,7 +2154,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/system.SysUser'
+          $ref: '#/definitions/system.User'
       produces:
       - application/json
       responses:
@@ -2166,7 +2166,7 @@ paths:
       - ApiKeyAuth: []
       summary: 设置用户信息
       tags:
-      - SysUser
+      - User
 securityDefinitions:
   ApiKeyAuth:
     in: header

@@ -14,7 +14,7 @@ type ExcelApi struct {
 
 // ExportExcel
 //
-// @Tags excel
+// @Tags Excel
 // @Summary 导出Excel
 // @Security ApiKeyAuth
 // @accept application/json
@@ -37,7 +37,7 @@ func (e *ExcelApi) ExportExcel(c *gin.Context) {
 }
 
 // ImportExcel
-// @Tags excel
+// @Tags Excel
 // @Summary 导入Excel文件
 // @Security ApiKeyAuth
 // @accept multipart/form-data
@@ -57,7 +57,7 @@ func (e *ExcelApi) ImportExcel(c *gin.Context) {
 }
 
 // LoadExcel
-// @Tags excel
+// @Tags Excel
 // @Summary 加载Excel数据
 // @Security ApiKeyAuth
 // @Produce  application/json
@@ -79,7 +79,7 @@ func (e *ExcelApi) LoadExcel(c *gin.Context) {
 }
 
 // DownloadTemplate
-// @Tags excel
+// @Tags Excel
 // @Summary 下载模板
 // @Security ApiKeyAuth
 // @accept multipart/form-data
