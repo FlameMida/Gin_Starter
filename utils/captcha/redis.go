@@ -21,11 +21,13 @@ type RedisStore struct {
 	PreKey     string
 }
 
-func (rs *RedisStore) Set(id string, value string) {
+func (rs *RedisStore) Set(id string, value string) error {
 	err := global.REDIS.Set(context.Background(), rs.PreKey+id, value, rs.Expiration).Err()
 	if err != nil {
 		global.LOG.Error("RedisStoreSetError!", zap.Error(err))
+		return err
 	}
+	return nil
 }
 
 func (rs *RedisStore) Get(key string, clear bool) string {
