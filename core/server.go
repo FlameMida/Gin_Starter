@@ -24,7 +24,7 @@ func RunWindowsServer() {
 
 	time.Sleep(10 * time.Microsecond)
 	global.LOG.Info("server run success on ", zap.String("address", address))
-	fmt.Printf(`[GIN-STARTER]文档地址:http://127.0.0.1%s/swagger/index.html`, address)
+	fmt.Printf("[GIN-STARTER]文档地址:http://127.0.0.1%s/swagger/index.html \n", address)
 	global.LOG.Error(s.ListenAndServe().Error())
 
 }
