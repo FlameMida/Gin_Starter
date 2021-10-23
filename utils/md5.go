@@ -5,11 +5,11 @@ import (
 	"encoding/hex"
 )
 
-//@author: Flame
-//@function: MD5V
-//@description: md5加密
-//@param: str []byte
-//@return: string
+// @author: Flame
+// @function: MD5V
+// @description: md5加密
+// @param: str []byte
+// @return: string
 
 func MD5V(str []byte) string {
 	h := md5.New()

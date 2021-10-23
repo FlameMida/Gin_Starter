@@ -15,7 +15,7 @@ import (
 //@return: zapcore.WriteSyncer, error
 
 func GetWriteSyncer() (zapcore.WriteSyncer, error) {
-	fileWriter, err := zaprotatelogs.New(
+	fileWriter, err := zapRotateLogs.New(
 		path.Join(global.CONFIG.Zap.Director, "%Y-%m-%d.log"),
 		zaprotatelogs.WithMaxAge(7*24*time.Hour),
 		zaprotatelogs.WithRotationTime(24*time.Hour),

@@ -49,7 +49,7 @@ func MysqlTables(db *gorm.DB) {
 		system.Operations{},
 	)
 	if err != nil {
-		global.LOG.Error("register table failed", zap.Any("err", err))
+		global.LOG.Error("register table failed", zap.Error(err))
 		os.Exit(0)
 	}
 	global.LOG.Info("register table success")
@@ -75,7 +75,7 @@ func GormMysql() *gorm.DB {
 		SkipInitializeWithVersion: false, // 根据版本自动配置
 	}
 	if db, err := gorm.Open(mysql.New(mysqlConfig), gormConfig()); err != nil {
-		//global.LOG.Error("MySQL启动异常", zap.Any("err", err))
+		//global.LOG.Error("MySQL启动异常", zap.Error(err))
 		//os.Exit(0)
 		//return nil
 		return nil

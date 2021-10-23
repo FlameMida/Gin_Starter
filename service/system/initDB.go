@@ -11,15 +11,16 @@ import (
 	"gin-starter/source"
 	"gin-starter/utils"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-//@author: Flame
-//@function: writeConfig
-//@description: 回写配置
-//@param: viper *viper.Viper, mysql config.Mysql
-//@return: error
+// @author: Flame
+// @function: writeConfig
+// @description: 回写配置
+// @param: viper *viper.Viper, mysql config.Mysql
+// @return: error
 
 type InitDBService struct {
 }
@@ -33,11 +34,11 @@ func (initDBService *InitDBService) writeConfig(viper *viper.Viper, mysql config
 	return viper.WriteConfig()
 }
 
-//@author: Flame
-//@function: createTable
-//@description: 创建数据库(mysql)
-//@param: dsn string, driver string, createSql
-//@return: error
+// @author: Flame
+// @function: createTable
+// @description: 创建数据库(mysql)
+// @param: dsn string, driver string, createSql
+// @return: error
 
 func (initDBService *InitDBService) createTable(dsn string, driver string, createSql string) error {
 	db, err := sql.Open(driver, dsn)
@@ -47,7 +48,8 @@ func (initDBService *InitDBService) createTable(dsn string, driver string, creat
 	defer func(db *sql.DB) {
 		err := db.Close()
 		if err != nil {
-
+			global.LOG.Error("关闭db链接错误", zap.Error(err))
+			return
 		}
 	}(db)
 	if err = db.Ping(); err != nil {
@@ -67,11 +69,11 @@ func (initDBService *InitDBService) initDB(InitDBFunctions ...system.InitDBFunc)
 	return nil
 }
 
-//@author: Flame
-//@function: InitDB
-//@description: 创建数据库并初始化
-//@param: conf request.InitDB
-//@return: error
+// @author: Flame
+// @function: InitDB
+// @description: 创建数据库并初始化
+// @param: conf request.InitDB
+// @return: error
 
 func (initDBService *InitDBService) InitDB(conf request.InitDB) error {
 

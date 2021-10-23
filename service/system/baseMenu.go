@@ -10,11 +10,11 @@ import (
 type BaseMenuService struct {
 }
 
-//@author: Flame
-//@function: DeleteBaseMenu
-//@description: 删除基础路由
-//@param: id float64
-//@return: err error
+// @author: Flame
+// @function: DeleteBaseMenu
+// @description: 删除基础路由
+// @param: id float64
+// @return: err error
 
 func (baseMenuService *BaseMenuService) DeleteBaseMenu(id float64) (err error) {
 	err = global.DB.Preload("Parameters").Where("parent_id = ?", id).First(&system.BaseMenu{}).Error
@@ -22,10 +22,19 @@ func (baseMenuService *BaseMenuService) DeleteBaseMenu(id float64) (err error) {
 		var menu system.BaseMenu
 		db := global.DB.Preload("SysAuthorities").Where("id = ?", id).First(&menu).Delete(&menu)
 		err = global.DB.Delete(&system.BaseMenuParameter{}, "base_menu_id = ?", id).Error
+		if err != nil {
+			return err
+		}
 		if len(menu.SysAuthorities) > 0 {
 			err = global.DB.Model(&menu).Association("SysAuthorities").Delete(&menu.SysAuthorities)
+			if err != nil {
+				return err
+			}
 		} else {
 			err = db.Error
+			if err != nil {
+				return err
+			}
 		}
 	} else {
 		return errors.New("此菜单存在子菜单不可删除")
@@ -33,11 +42,11 @@ func (baseMenuService *BaseMenuService) DeleteBaseMenu(id float64) (err error) {
 	return err
 }
 
-//@author: Flame
-//@function: UpdateBaseMenu
-//@description: 更新路由
-//@param: menu model.BaseMenu
-//@return: err error
+// @author: Flame
+// @function: UpdateBaseMenu
+// @description: 更新路由
+// @param: menu model.BaseMenu
+// @return: err error
 
 func (baseMenuService *BaseMenuService) UpdateBaseMenu(menu system.BaseMenu) (err error) {
 	var oldMenu system.BaseMenu
@@ -88,11 +97,11 @@ func (baseMenuService *BaseMenuService) UpdateBaseMenu(menu system.BaseMenu) (er
 	return err
 }
 
-//@author: Flame
-//@function: GetBaseMenuById
-//@description: 返回当前选中menu
-//@param: id float64
-//@return: err error, menu model.BaseMenu
+// @author: Flame
+// @function: GetBaseMenuById
+// @description: 返回当前选中menu
+// @param: id float64
+// @return: err error, menu model.BaseMenu
 
 func (baseMenuService *BaseMenuService) GetBaseMenuById(id float64) (err error, menu system.BaseMenu) {
 	err = global.DB.Preload("Parameters").Where("id = ?", id).First(&menu).Error

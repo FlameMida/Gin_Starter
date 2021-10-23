@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-//@author: Flame
-//@function: ZipFiles
-//@description: 压缩文件
-//@param: filename string, files []string, oldForm, newForm string
-//@return: error
+// @author: Flame
+// @function: ZipFiles
+// @description: 压缩文件
+// @param: filename string, files []string, oldForm, newForm string
+// @return: error
 
 func ZipFiles(filename string, files []string, oldForm, newForm string) error {
 

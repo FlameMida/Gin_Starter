@@ -27,13 +27,13 @@ func (u *FileTransferApi) UploadFile(c *gin.Context) {
 	noSave := c.DefaultQuery("noSave", "0")
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
-		global.LOG.Error("接收文件失败!", zap.Any("err", err))
+		global.LOG.Error("接收文件失败!", zap.Error(err))
 		response.FailWithMessage("接收文件失败", c)
 		return
 	}
 	err, file = fileTransferService.UploadFile(header, noSave) // 文件上传后拿到文件路径
 	if err != nil {
-		global.LOG.Error("修改数据库链接失败!", zap.Any("err", err))
+		global.LOG.Error("修改数据库链接失败!", zap.Error(err))
 		response.FailWithMessage("修改数据库链接失败", c)
 		return
 	}
@@ -52,7 +52,7 @@ func (u *FileTransferApi) DeleteFile(c *gin.Context) {
 	var file example.FileTransfer
 	_ = c.ShouldBindJSON(&file)
 	if err := fileTransferService.DeleteFile(file); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 		return
 	}
@@ -73,7 +73,7 @@ func (u *FileTransferApi) GetFileList(c *gin.Context) {
 	_ = c.ShouldBindJSON(&pageInfo)
 	err, list, total := fileTransferService.GetFileRecordInfoList(pageInfo)
 	if err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.PageResult{

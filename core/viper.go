@@ -7,8 +7,10 @@ import (
 	_ "gin-starter/packfile"
 	"gin-starter/utils"
 	"github.com/fsnotify/fsnotify"
+	"github.com/songzhibin97/gkit/cache/local_cache"
 	"github.com/spf13/viper"
 	"os"
+	"time"
 )
 
 func Viper(path ...string) *viper.Viper {
@@ -50,5 +52,9 @@ func Viper(path ...string) *viper.Viper {
 	if err := v.Unmarshal(&global.CONFIG); err != nil {
 		fmt.Println(err)
 	}
+
+	global.BlackCache = local_cache.NewCache(
+		local_cache.SetDefaultExpire(time.Second * time.Duration(global.CONFIG.JWT.ExpiresTime)),
+	)
 	return v
 }

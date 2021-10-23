@@ -6,11 +6,11 @@ import (
 	"strings"
 )
 
-//@author: Flame
-//@function: StructToMap
-//@description: 利用反射将结构体转化为map
-//@param: obj interface{}
-//@return: map[string]interface{}
+// @author: Flame
+// @function: StructToMap
+// @description: 利用反射将结构体转化为map
+// @param: obj interface{}
+// @return: map[string]interface{}
 
 func StructToMap(obj interface{}) map[string]interface{} {
 	obj1 := reflect.TypeOf(obj)
@@ -27,11 +27,11 @@ func StructToMap(obj interface{}) map[string]interface{} {
 	return data
 }
 
-//@author: Flame
-//@function: ArrayToString
-//@description: 将数组格式化为字符串
-//@param: array []interface{}
-//@return: string
+// @author: Flame
+// @function: ArrayToString
+// @description: 将数组格式化为字符串
+// @param: array []interface{}
+// @return: string
 
 func ArrayToString(array []interface{}) string {
 	return strings.Replace(strings.Trim(fmt.Sprint(array), "[]"), " ", ",", -1)

@@ -26,7 +26,7 @@ type AuthorityMenu struct {
 // @Router /menu/getMenu [post]
 func (a *AuthorityMenu) GetMenu(c *gin.Context) {
 	if err, menus := menuService.GetMenuTree(utils.GetUserAuthorityId(c)); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		if menus == nil {
@@ -46,7 +46,7 @@ func (a *AuthorityMenu) GetMenu(c *gin.Context) {
 // @Router /menu/getBaseMenuTree [post]
 func (a *AuthorityMenu) GetBaseMenuTree(c *gin.Context) {
 	if err, menus := menuService.GetBaseMenuTree(); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(systemRes.SysBaseMenusResponse{Menus: menus}, "获取成功", c)
@@ -70,7 +70,7 @@ func (a *AuthorityMenu) AddMenuAuthority(c *gin.Context) {
 		return
 	}
 	if err := menuService.AddMenuAuthority(authorityMenu.Menus, authorityMenu.AuthorityId); err != nil {
-		global.LOG.Error("添加失败!", zap.Any("err", err))
+		global.LOG.Error("添加失败!", zap.Error(err))
 		response.FailWithMessage("添加失败", c)
 	} else {
 		response.OkWithMessage("添加成功", c)
@@ -85,7 +85,7 @@ func (a *AuthorityMenu) AddMenuAuthority(c *gin.Context) {
 // @Produce application/json
 // @Param data body request.GetAuthorityId true "角色ID"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
-// @Router /menu/GetMenuAuthority [post]
+// @Router /menu/getMenuAuthority [post]
 func (a *AuthorityMenu) GetMenuAuthority(c *gin.Context) {
 	var param request.GetAuthorityId
 	_ = c.ShouldBindJSON(&param)
@@ -94,7 +94,7 @@ func (a *AuthorityMenu) GetMenuAuthority(c *gin.Context) {
 		return
 	}
 	if err, menus := menuService.GetMenuAuthority(&param); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithDetailed(systemRes.SysMenusResponse{Menus: menus}, "获取失败", c)
 	} else {
 		response.OkWithDetailed(gin.H{"menus": menus}, "获取成功", c)
@@ -102,7 +102,6 @@ func (a *AuthorityMenu) GetMenuAuthority(c *gin.Context) {
 }
 
 // AddBaseMenu
-//
 // @Tags Menu
 // @Summary 新增菜单
 // @Security ApiKeyAuth
@@ -123,7 +122,7 @@ func (a *AuthorityMenu) AddBaseMenu(c *gin.Context) {
 		return
 	}
 	if err := menuService.AddBaseMenu(menu); err != nil {
-		global.LOG.Error("添加失败!", zap.Any("err", err))
+		global.LOG.Error("添加失败!", zap.Error(err))
 
 		response.FailWithMessage("添加失败", c)
 	} else {
@@ -132,7 +131,6 @@ func (a *AuthorityMenu) AddBaseMenu(c *gin.Context) {
 }
 
 // DeleteBaseMenu
-//
 // @Tags Menu
 // @Summary 删除菜单
 // @Security ApiKeyAuth
@@ -149,7 +147,7 @@ func (a *AuthorityMenu) DeleteBaseMenu(c *gin.Context) {
 		return
 	}
 	if err := baseMenuService.DeleteBaseMenu(menu.ID); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -177,7 +175,7 @@ func (a *AuthorityMenu) UpdateBaseMenu(c *gin.Context) {
 		return
 	}
 	if err := baseMenuService.UpdateBaseMenu(menu); err != nil {
-		global.LOG.Error("更新失败!", zap.Any("err", err))
+		global.LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -201,7 +199,7 @@ func (a *AuthorityMenu) GetBaseMenuById(c *gin.Context) {
 		return
 	}
 	if err, menu := baseMenuService.GetBaseMenuById(idInfo.ID); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(systemRes.SysBaseMenuResponse{Menu: menu}, "获取成功", c)
@@ -225,7 +223,7 @@ func (a *AuthorityMenu) GetMenuList(c *gin.Context) {
 		return
 	}
 	if err, menuList, total := menuService.GetInfoList(); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.PageResult{

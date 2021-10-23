@@ -24,7 +24,7 @@ type SimpleUploadApi struct {
 // @Router /SimpleUploadApi/upload [post]
 func (s *SimpleUploadApi) SimpleUpload(c *gin.Context) {
 	var chunk example.SimpleUploader
-	_, header, err := c.Request.FormFile("file")
+	_, header, _ := c.Request.FormFile("file")
 	chunk.Filename = c.PostForm("filename")
 	chunk.ChunkNumber = c.PostForm("chunkNumber")
 	chunk.CurrentChunkSize = c.PostForm("currentChunkSize")
@@ -35,20 +35,20 @@ func (s *SimpleUploadApi) SimpleUpload(c *gin.Context) {
 	hasDir, _ := utils.PathExists(chunkDir)
 	if !hasDir {
 		if err := utils.CreateDir(chunkDir); err != nil {
-			global.LOG.Error("创建目录失败!", zap.Any("err", err))
+			global.LOG.Error("创建目录失败!", zap.Error(err))
 		}
 	}
 	chunkPath := chunkDir + chunk.Filename + chunk.ChunkNumber
-	err = c.SaveUploadedFile(header, chunkPath)
+	err := c.SaveUploadedFile(header, chunkPath)
 	if err != nil {
-		global.LOG.Error("切片创建失败!", zap.Any("err", err))
+		global.LOG.Error("切片创建失败!", zap.Error(err))
 		response.FailWithMessage("切片创建失败", c)
 		return
 	}
 	chunk.CurrentChunkPath = chunkPath
 	err = simpleUploadService.SaveChunk(chunk)
 	if err != nil {
-		global.LOG.Error("切片创建失败!", zap.Any("err", err))
+		global.LOG.Error("切片创建失败!", zap.Error(err))
 		response.FailWithMessage("切片创建失败", c)
 		return
 	} else {
@@ -68,7 +68,7 @@ func (s *SimpleUploadApi) CheckFileMd5(c *gin.Context) {
 	md5 := c.Query("md5")
 	err, chunks, isDone := simpleUploadService.CheckFileMd5(md5)
 	if err != nil {
-		global.LOG.Error("md5读取失败!", zap.Any("err", err))
+		global.LOG.Error("md5读取失败!", zap.Error(err))
 		response.FailWithMessage("md5读取失败", c)
 	} else {
 		response.OkWithDetailed(gin.H{
@@ -91,7 +91,7 @@ func (s *SimpleUploadApi) MergeFileMd5(c *gin.Context) {
 	fileName := c.Query("fileName")
 	err := simpleUploadService.MergeFileMd5(md5, fileName)
 	if err != nil {
-		global.LOG.Error("md5读取失败!", zap.Any("err", err))
+		global.LOG.Error("md5读取失败!", zap.Error(err))
 		response.FailWithMessage("md5读取失败", c)
 	} else {
 		response.OkWithMessage("合并成功", c)

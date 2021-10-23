@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin-starter/global"
 	"gin-starter/initialize"
+	"gin-starter/service/system"
 	"go.uber.org/zap"
 	"time"
 )
@@ -16,6 +17,10 @@ func RunWindowsServer() {
 	if global.CONFIG.System.UseMultipoint {
 		// 初始化redis服务
 		initialize.Redis()
+	}
+	// 从db加载jwt数据
+	if global.DB != nil {
+		system.LoadAll()
 	}
 	Router := initialize.Routers()
 

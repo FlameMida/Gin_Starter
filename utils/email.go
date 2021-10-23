@@ -11,22 +11,22 @@ import (
 	"github.com/jordan-wright/email"
 )
 
-//@author: Flame
-//@function: Email
-//@description: Email发送方法
-//@param: subject string, body string
-//@return: error
+// @author: Flame
+// @function: Email
+// @description: Email发送方法
+// @param: subject string, body string
+// @return: error
 
 func Email(subject string, body string) error {
 	to := strings.Split(global.CONFIG.Email.To, ",")
 	return send(to, subject, body)
 }
 
-//@author: Flame
-//@function: ErrorToEmail
-//@description: 给email中间件错误发送邮件到指定邮箱
-//@param: subject string, body string
-//@return: error
+// @author: Flame
+// @function: ErrorToEmail
+// @description: 给email中间件错误发送邮件到指定邮箱
+// @param: subject string, body string
+// @return: error
 
 func ErrorToEmail(subject string, body string) error {
 	to := strings.Split(global.CONFIG.Email.To, ",")
@@ -36,22 +36,22 @@ func ErrorToEmail(subject string, body string) error {
 	return send(to, subject, body)
 }
 
-//@author: Flame
-//@function: EmailTest
-//@description: Email测试方法
-//@param: subject string, body string
-//@return: error
+// @author: Flame
+// @function: EmailTest
+// @description: Email测试方法
+// @param: subject string, body string
+// @return: error
 
 func EmailTest(subject string, body string) error {
 	to := []string{global.CONFIG.Email.From}
 	return send(to, subject, body)
 }
 
-//@author: Flame
-//@function: send
-//@description: Email发送方法
-//@param: subject string, body string
-//@return: error
+// @author: Flame
+// @function: send
+// @description: Email发送方法
+// @param: subject string, body string
+// @return: error
 
 func send(to []string, subject string, body string) error {
 	from := global.CONFIG.Email.From

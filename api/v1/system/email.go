@@ -17,7 +17,7 @@ import (
 // @Router /email/emailTest [post]
 func (s *Systems) EmailTest(c *gin.Context) {
 	if err := emailService.EmailTest(); err != nil {
-		global.LOG.Error("发送失败!", zap.Any("err", err))
+		global.LOG.Error("发送失败!", zap.Error(err))
 		response.FailWithMessage("发送失败", c)
 	} else {
 		response.OkWithData("发送成功", c)

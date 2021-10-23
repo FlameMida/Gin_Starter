@@ -25,7 +25,7 @@ var infos = []DataAuthority{
 }
 
 // Init @author: Flame
-//@description: data_authority_id 表数据初始化
+// @description: data_authority_id 表数据初始化
 func (d *dataAuthorities) Init() error {
 	return global.DB.Table("data_authority_id").Transaction(func(tx *gorm.DB) error {
 		if tx.Where("data_authority_id_authority_id IN ('888', '9528') ").Find(&[]DataAuthority{}).RowsAffected == 5 {

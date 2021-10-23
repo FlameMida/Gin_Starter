@@ -10,11 +10,11 @@ import (
 	"strconv"
 )
 
-//@author: Flame
-//@function: CreateAuthority
-//@description: 创建一个角色
-//@param: auth model.Authority
-//@return: err error, authority model.Authority
+// @author: Flame
+// @function: CreateAuthority
+// @description: 创建一个角色
+// @param: auth model.Authority
+// @return: err error, authority model.Authority
 
 type AuthorityService struct {
 }
@@ -30,11 +30,11 @@ func (authorityService *AuthorityService) CreateAuthority(auth system.Authority)
 	return err, auth
 }
 
-//@author: Flame
-//@function: CopyAuthority
-//@description: 复制一个角色
-//@param: copyInfo response.SysAuthorityCopyResponse
-//@return: err error, authority model.Authority
+// @author: Flame
+// @function: CopyAuthority
+// @description: 复制一个角色
+// @param: copyInfo response.SysAuthorityCopyResponse
+// @return: err error, authority model.Authority
 
 func (authorityService *AuthorityService) CopyAuthority(copyInfo response.SysAuthorityCopyResponse) (err error, authority system.Authority) {
 	var authorityBox system.Authority
@@ -43,6 +43,9 @@ func (authorityService *AuthorityService) CopyAuthority(copyInfo response.SysAut
 	}
 	copyInfo.Authority.Children = []system.Authority{}
 	err, menus := MenuServiceApp.GetMenuAuthority(&request.GetAuthorityId{AuthorityId: copyInfo.OldAuthorityId})
+	if err != nil {
+		return
+	}
 	var baseMenu []system.BaseMenu
 	for _, v := range menus {
 		intNum, _ := strconv.Atoi(v.MenuId)
@@ -51,7 +54,9 @@ func (authorityService *AuthorityService) CopyAuthority(copyInfo response.SysAut
 	}
 	copyInfo.Authority.SysBaseMenus = baseMenu
 	err = global.DB.Create(&copyInfo.Authority).Error
-
+	if err != nil {
+		return
+	}
 	paths := CasbinServiceApp.GetPolicyPathByAuthorityId(copyInfo.OldAuthorityId)
 	err = CasbinServiceApp.UpdateCasbin(copyInfo.Authority.AuthorityId, paths)
 	if err != nil {
@@ -60,22 +65,22 @@ func (authorityService *AuthorityService) CopyAuthority(copyInfo response.SysAut
 	return err, copyInfo.Authority
 }
 
-//@author: Flame
-//@function: UpdateAuthority
-//@description: 更改一个角色
-//@param: auth model.Authority
-//@return: err error, authority model.Authority
+// @author: Flame
+// @function: UpdateAuthority
+// @description: 更改一个角色
+// @param: auth model.Authority
+// @return: err error, authority model.Authority
 
 func (authorityService *AuthorityService) UpdateAuthority(auth system.Authority) (err error, authority system.Authority) {
 	err = global.DB.Where("authority_id = ?", auth.AuthorityId).First(&system.Authority{}).Updates(&auth).Error
 	return err, auth
 }
 
-//@author: Flame
-//@function: DeleteAuthority
-//@description: 删除角色
-//@param: auth *model.Authority
-//@return: err error
+// @author: Flame
+// @function: DeleteAuthority
+// @description: 删除角色
+// @param: auth *model.Authority
+// @return: err error
 
 func (authorityService *AuthorityService) DeleteAuthority(auth *system.Authority) (err error) {
 	if !errors.Is(global.DB.Where("authority_id = ?", auth.AuthorityId).First(&system.User{}).Error, gorm.ErrRecordNotFound) {
@@ -86,27 +91,40 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.Authority
 	}
 	db := global.DB.Preload("SysBaseMenus").Where("authority_id = ?", auth.AuthorityId).First(auth)
 	err = db.Unscoped().Delete(auth).Error
+	if err != nil {
+		return
+	}
 	if len(auth.SysBaseMenus) > 0 {
 		err = global.DB.Model(auth).Association("SysBaseMenus").Delete(auth.SysBaseMenus)
-		//err = db.Association("SysBaseMenus").Delete(&auth)
+		if err != nil {
+			return
+		}
+		// err = db.Association("SysBaseMenus").Delete(&auth)
 	} else {
 		err = db.Error
+		if err != nil {
+			return
+		}
 	}
 	err = global.DB.Delete(&[]system.UserAuthority{}, "authority_authority_id = ?", auth.AuthorityId).Error
 	CasbinServiceApp.ClearCasbin(0, auth.AuthorityId)
 	return err
 }
 
-//@author: Flame
-//@function: GetAuthorityInfoList
-//@description: 分页获取数据
-//@param: info request.PageInfo
-//@return: err error, list interface{}, total int64
+// @author: Flame
+// @function: GetAuthorityInfoList
+// @description: 分页获取数据
+// @param: info request.PageInfo
+// @return: err error, list interface{}, total int64
 
 func (authorityService *AuthorityService) GetAuthorityInfoList(info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
-	db := global.DB
+	db := global.DB.Model(&system.Authority{})
+	err = db.Where("parent_id = 0").Count(&total).Error
+	if err != nil {
+		return err, nil, 0
+	}
 	var authority []system.Authority
 	err = db.Limit(limit).Offset(offset).Preload("DataAuthorityId").Where("parent_id = 0").Find(&authority).Error
 	if len(authority) > 0 {
@@ -117,22 +135,22 @@ func (authorityService *AuthorityService) GetAuthorityInfoList(info request.Page
 	return err, authority, total
 }
 
-//@author: Flame
-//@function: GetAuthorityInfo
-//@description: 获取所有角色信息
-//@param: auth model.Authority
-//@return: err error, sa model.Authority
+// @author: Flame
+// @function: GetAuthorityInfo
+// @description: 获取所有角色信息
+// @param: auth model.Authority
+// @return: err error, sa model.Authority
 
 func (authorityService *AuthorityService) GetAuthorityInfo(auth system.Authority) (err error, sa system.Authority) {
 	err = global.DB.Preload("DataAuthorityId").Where("authority_id = ?", auth.AuthorityId).First(&sa).Error
 	return err, sa
 }
 
-//@author: Flame
-//@function: SetDataAuthority
-//@description: 设置角色资源权限
-//@param: auth model.Authority
-//@return: error
+// @author: Flame
+// @function: SetDataAuthority
+// @description: 设置角色资源权限
+// @param: auth model.Authority
+// @return: error
 
 func (authorityService *AuthorityService) SetDataAuthority(auth system.Authority) error {
 	var s system.Authority
@@ -141,11 +159,11 @@ func (authorityService *AuthorityService) SetDataAuthority(auth system.Authority
 	return err
 }
 
-//@author: Flame
-//@function: SetMenuAuthority
-//@description: 菜单与角色绑定
-//@param: auth *model.Authority
-//@return: error
+// @author: Flame
+// @function: SetMenuAuthority
+// @description: 菜单与角色绑定
+// @param: auth *model.Authority
+// @return: error
 
 func (authorityService *AuthorityService) SetMenuAuthority(auth *system.Authority) error {
 	var s system.Authority
@@ -154,11 +172,11 @@ func (authorityService *AuthorityService) SetMenuAuthority(auth *system.Authorit
 	return err
 }
 
-//@author: Flame
-//@function: findChildrenAuthority
-//@description: 查询子角色
-//@param: authority *model.Authority
-//@return: err error
+// @author: Flame
+// @function: findChildrenAuthority
+// @description: 查询子角色
+// @param: authority *model.Authority
+// @return: err error
 
 func (authorityService *AuthorityService) findChildrenAuthority(authority *system.Authority) (err error) {
 	err = global.DB.Preload("DataAuthorityId").Where("parent_id = ?", authority.AuthorityId).Find(&authority.Children).Error

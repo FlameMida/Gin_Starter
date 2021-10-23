@@ -3,6 +3,7 @@ package global
 import (
 	"gin-starter/utils/timer"
 
+	"github.com/songzhibin97/gkit/cache/local_cache"
 	"golang.org/x/sync/singleflight"
 
 	"go.uber.org/zap"
@@ -22,4 +23,5 @@ var (
 	LOG                *zap.Logger
 	Timer              = timer.NewTimerTask()
 	ConcurrencyControl = &singleflight.Group{}
+	BlackCache         local_cache.Cache
 )

@@ -26,8 +26,9 @@ func ErrorToEmail() gin.HandlerFunc {
 			err, user := userService.FindUserById(id)
 			if err != nil {
 				username = "Unknown"
+			} else {
+				username = user.Username
 			}
-			username = user.Username
 		}
 		body, _ := ioutil.ReadAll(c.Request.Body)
 		record := system.Operations{
@@ -41,14 +42,14 @@ func ErrorToEmail() gin.HandlerFunc {
 
 		c.Next()
 
-		latency := time.Now().Sub(now)
+		latency := time.Since(now)
 		status := c.Writer.Status()
 		record.ErrorMessage = c.Errors.ByType(gin.ErrorTypePrivate).String()
 		str := "接收到的请求为" + record.Body + "\n" + "请求方式为" + record.Method + "\n" + "报错信息如下" + record.ErrorMessage + "\n" + "耗时" + latency.String() + "\n"
 		if status != 200 {
 			subject := username + "" + record.Ip + "调用了" + record.Path + "报错了"
 			if err := utils.ErrorToEmail(subject, str); err != nil {
-				global.LOG.Error("ErrorToEmail Failed, err:", zap.Any("err", err))
+				global.LOG.Error("ErrorToEmail Failed, err:", zap.Error(err))
 			}
 		}
 	}

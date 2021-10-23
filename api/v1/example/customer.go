@@ -34,7 +34,7 @@ func (e *CustomerApi) CreateCustomer(c *gin.Context) {
 	customer.UserID = utils.GetUserID(c)
 	customer.UserAuthorityID = utils.GetUserAuthorityId(c)
 	if err := customerService.CreateCustomer(customer); err != nil {
-		global.LOG.Error("创建失败!", zap.Any("err", err))
+		global.LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -58,7 +58,7 @@ func (e *CustomerApi) DeleteCustomer(c *gin.Context) {
 		return
 	}
 	if err := customerService.DeleteCustomer(customer); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -86,7 +86,7 @@ func (e *CustomerApi) UpdateCustomer(c *gin.Context) {
 		return
 	}
 	if err := customerService.UpdateCustomer(&customer); err != nil {
-		global.LOG.Error("更新失败!", zap.Any("err", err))
+		global.LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -111,7 +111,7 @@ func (e *CustomerApi) GetCustomer(c *gin.Context) {
 	}
 	err, data := customerService.GetCustomer(customer.ID)
 	if err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(exampleRes.CustomerResponse{Customer: data}, "获取成功", c)
@@ -136,7 +136,7 @@ func (e *CustomerApi) GetCustomerList(c *gin.Context) {
 	}
 	err, customerList, total := customerService.GetCustomerInfoList(utils.GetUserAuthorityId(c), pageInfo)
 	if err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败"+err.Error(), c)
 	} else {
 		response.OkWithDetailed(response.PageResult{

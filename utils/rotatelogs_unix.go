@@ -1,3 +1,4 @@
+//go:build !windows
 // +build !windows
 
 package utils
@@ -11,10 +12,10 @@ import (
 	"time"
 )
 
-//@author: Flame
-//@function: GetWriteSyncer
-//@description: zap logger中加入file-RotateLogs
-//@return: zapcore.WriteSyncer, error
+// @author: Flame
+// @function: GetWriteSyncer
+// @description: zap logger中加入file-RotateLogs
+// @return: zapcore.WriteSyncer, error
 
 func GetWriteSyncer() (zapcore.WriteSyncer, error) {
 	fileWriter, err := zapRotateLogs.New(

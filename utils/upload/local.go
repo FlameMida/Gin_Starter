@@ -15,12 +15,12 @@ import (
 
 type Local struct{}
 
-//@author: Flame
-//@object: *Local
-//@function: UploadFile
-//@description: 上传文件
-//@param: file *multipart.FileHeader
-//@return: string, string, error
+// @author: Flame
+// @object: *Local
+// @function: UploadFile
+// @description: 上传文件
+// @param: file *multipart.FileHeader
+// @return: string, string, error
 
 func (*Local) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	// 读取文件后缀
@@ -67,12 +67,12 @@ func (*Local) UploadFile(file *multipart.FileHeader) (string, string, error) {
 }
 
 // DeleteFile
-//@author: Flame
-//@object: *Local
-//@function: DeleteFile
-//@description: 删除文件
-//@param: key string
-//@return: error
+// @author: Flame
+// @object: *Local
+// @function: DeleteFile
+// @description: 删除文件
+// @param: key string
+// @return: error
 func (*Local) DeleteFile(key string) error {
 	p := global.CONFIG.Local.Path + "/" + key
 	if strings.Contains(p, global.CONFIG.Local.Path) {

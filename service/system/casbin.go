@@ -13,11 +13,11 @@ import (
 	"sync"
 )
 
-//@author: Flame
-//@function: UpdateCasbin
-//@description: 更新casbin权限
-//@param: authorityId string, casbinInfos []request.CasbinInfo
-//@return: error
+// @author: Flame
+// @function: UpdateCasbin
+// @description: 更新casbin权限
+// @param: authorityId string, casbinInfos []request.CasbinInfo
+// @return: error
 
 type CasbinService struct {
 }
@@ -38,17 +38,17 @@ func (casbinService *CasbinService) UpdateCasbin(authorityId string, casbinInfos
 	}
 	e := casbinService.Casbin()
 	success, _ := e.AddPolicies(rules)
-	if success == false {
+	if !success {
 		return errors.New("存在相同api,添加失败,请联系管理员")
 	}
 	return nil
 }
 
-//@author: Flame
-//@function: UpdateCasbinApi
-//@description: API更新随动
-//@param: oldPath string, newPath string, oldMethod string, newMethod string
-//@return: error
+// @author: Flame
+// @function: UpdateCasbinApi
+// @description: API更新随动
+// @param: oldPath string, newPath string, oldMethod string, newMethod string
+// @return: error
 
 func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath string, oldMethod string, newMethod string) error {
 	err := global.DB.Table("casbin_rule").Model(&system.CasbinModel{}).Where("v1 = ? AND v2 = ?", oldPath, oldMethod).Updates(map[string]interface{}{
@@ -58,11 +58,11 @@ func (casbinService *CasbinService) UpdateCasbinApi(oldPath string, newPath stri
 	return err
 }
 
-//@author: Flame
-//@function: GetPolicyPathByAuthorityId
-//@description: 获取权限列表
-//@param: authorityId string
-//@return: pathMaps []request.CasbinInfo
+// @author: Flame
+// @function: GetPolicyPathByAuthorityId
+// @description: 获取权限列表
+// @param: authorityId string
+// @return: pathMaps []request.CasbinInfo
 
 func (casbinService *CasbinService) GetPolicyPathByAuthorityId(authorityId string) (pathMaps []request.CasbinInfo) {
 	e := casbinService.Casbin()
@@ -76,11 +76,11 @@ func (casbinService *CasbinService) GetPolicyPathByAuthorityId(authorityId strin
 	return pathMaps
 }
 
-//@author: Flame
-//@function: ClearCasbin
-//@description: 清除匹配的权限
-//@param: v int, p ...string
-//@return: bool
+// @author: Flame
+// @function: ClearCasbin
+// @description: 清除匹配的权限
+// @param: v int, p ...string
+// @return: bool
 
 func (casbinService *CasbinService) ClearCasbin(v int, p ...string) bool {
 	e := casbinService.Casbin()
@@ -89,10 +89,10 @@ func (casbinService *CasbinService) ClearCasbin(v int, p ...string) bool {
 
 }
 
-//@author: Flame
-//@function: Casbin
-//@description: 持久化到数据库  引入自定义规则
-//@return: *casbin.Enforcer
+// @author: Flame
+// @function: Casbin
+// @description: 持久化到数据库  引入自定义规则
+// @return: *casbin.Enforcer
 
 var (
 	syncedEnforcer *casbin.SyncedEnforcer
@@ -109,11 +109,11 @@ func (casbinService *CasbinService) Casbin() *casbin.SyncedEnforcer {
 	return syncedEnforcer
 }
 
-//@author: Flame
-//@function: ParamsMatch
-//@description: 自定义规则函数
-//@param: fullNameKey1 string, key2 string
-//@return: bool
+// @author: Flame
+// @function: ParamsMatch
+// @description: 自定义规则函数
+// @param: fullNameKey1 string, key2 string
+// @return: bool
 
 func (casbinService *CasbinService) ParamsMatch(fullNameKey1 string, key2 string) bool {
 	key1 := strings.Split(fullNameKey1, "?")[0]
@@ -121,11 +121,11 @@ func (casbinService *CasbinService) ParamsMatch(fullNameKey1 string, key2 string
 	return util.KeyMatch2(key1, key2)
 }
 
-//@author: Flame
-//@function: ParamsMatchFunc
-//@description: 自定义规则函数
-//@param: args ...interface{}
-//@return: interface{}, error
+// @author: Flame
+// @function: ParamsMatchFunc
+// @description: 自定义规则函数
+// @param: args ...interface{}
+// @return: interface{}, error
 
 func (casbinService *CasbinService) ParamsMatchFunc(args ...interface{}) (interface{}, error) {
 	name1 := args[0].(string)

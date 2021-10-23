@@ -57,6 +57,9 @@ func (e *FileTransferService) DeleteFileChunk(fileMd5 string, fileName string, f
 	var chunks []example.FileChunk
 	var file example.File
 	err := global.DB.Where("file_md5 = ? AND file_name = ?", fileMd5, fileName).First(&file).Update("IsFinish", true).Update("file_path", filePath).Error
+	if err != nil {
+		return err
+	}
 	err = global.DB.Where("exa_file_id = ?", file.ID).Delete(&chunks).Unscoped().Error
 	return err
 }

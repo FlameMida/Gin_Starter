@@ -14,11 +14,11 @@ import (
 const breakpointDir = "./breakpointDir/"
 const finishDir = "./fileDir/"
 
-//@author: Flame
-//@function: BreakPointContinue
-//@description: 断点续传
-//@param: content []byte, fileName string, contentNumber int, contentTotal int, fileMd5 string
-//@return: error, string
+// @author: Flame
+// @function: BreakPointContinue
+// @description: 断点续传
+// @param: content []byte, fileName string, contentNumber int, contentTotal int, fileMd5 string
+// @return: error, string
 
 func BreakPointContinue(content []byte, fileName string, contentNumber int, fileMd5 string) (error, string) {
 	path := breakpointDir + fileMd5 + "/"
@@ -31,11 +31,11 @@ func BreakPointContinue(content []byte, fileName string, contentNumber int, file
 
 }
 
-//@author: Flame
-//@function: CheckMd5
-//@description: 检查Md5
-//@param: content []byte, chunkMd5 string
-//@return: CanUpload bool
+// @author: Flame
+// @function: CheckMd5
+// @description: 检查Md5
+// @param: content []byte, chunkMd5 string
+// @return: CanUpload bool
 
 func CheckMd5(content []byte, chunkMd5 string) (CanUpload bool) {
 	fileMd5 := MD5V(content)
@@ -46,11 +46,11 @@ func CheckMd5(content []byte, chunkMd5 string) (CanUpload bool) {
 	}
 }
 
-//@author: Flame
-//@function: makeFileContent
-//@description: 创建切片内容
-//@param: content []byte, fileName string, FileDir string, contentNumber int
-//@return: error, string
+// @author: Flame
+// @function: makeFileContent
+// @description: 创建切片内容
+// @param: content []byte, fileName string, FileDir string, contentNumber int
+// @return: error, string
 
 func makeFileContent(content []byte, fileName string, FileDir string, contentNumber int) (error, string) {
 	path := FileDir + fileName + "_" + strconv.Itoa(contentNumber)
@@ -69,11 +69,11 @@ func makeFileContent(content []byte, fileName string, FileDir string, contentNum
 	return nil, path
 }
 
-//@author: Flame
-//@function: makeFileContent
-//@description: 创建切片文件
-//@param: fileName string, FileMd5 string
-//@return: error, string
+// @author: Flame
+// @function: makeFileContent
+// @description: 创建切片文件
+// @param: fileName string, FileMd5 string
+// @return: error, string
 
 func MakeFile(fileName string, FileMd5 string) (error, string) {
 	rd, err := ioutil.ReadDir(breakpointDir + FileMd5)
@@ -99,11 +99,11 @@ func MakeFile(fileName string, FileMd5 string) (error, string) {
 	return nil, finishDir + fileName
 }
 
-//@author: Flame
-//@function: RemoveChunk
-//@description: 移除切片
-//@param: FileMd5 string
-//@return: error
+// @author: Flame
+// @function: RemoveChunk
+// @description: 移除切片
+// @param: FileMd5 string
+// @return: error
 
 func RemoveChunk(FileMd5 string) error {
 	err := os.RemoveAll(breakpointDir + FileMd5)

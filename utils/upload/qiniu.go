@@ -14,12 +14,12 @@ import (
 
 type Qiniu struct{}
 
-//@author: Flame
-//@object: *Qiniu
-//@function: UploadFile
-//@description: 上传文件
-//@param: file *multipart.FileHeader
-//@return: string, string, error
+// @author: Flame
+// @object: *Qiniu
+// @function: UploadFile
+// @description: 上传文件
+// @param: file *multipart.FileHeader
+// @return: string, string, error
 
 func (*Qiniu) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	putPolicy := storage.PutPolicy{Scope: global.CONFIG.Qiniu.Bucket}
@@ -48,12 +48,12 @@ func (*Qiniu) UploadFile(file *multipart.FileHeader) (string, string, error) {
 	return global.CONFIG.Qiniu.ImgPath + "/" + ret.Key, ret.Key, nil
 }
 
-//@author: Flame
-//@object: *Qiniu
-//@function: DeleteFile
-//@description: 删除文件
-//@param: key string
-//@return: error
+// @author: Flame
+// @object: *Qiniu
+// @function: DeleteFile
+// @description: 删除文件
+// @param: key string
+// @return: error
 
 func (*Qiniu) DeleteFile(key string) error {
 	mac := qbox.NewMac(global.CONFIG.Qiniu.AccessKey, global.CONFIG.Qiniu.SecretKey)
@@ -66,11 +66,11 @@ func (*Qiniu) DeleteFile(key string) error {
 	return nil
 }
 
-//@author: Flame
-//@object: *Qiniu
-//@function: qiniuConfig
-//@description: 根据配置文件进行返回七牛云的配置
-//@return: *storage.Config
+// @author: Flame
+// @object: *Qiniu
+// @function: qiniuConfig
+// @description: 根据配置文件进行返回七牛云的配置
+// @return: *storage.Config
 
 func qiniuConfig() *storage.Config {
 	cfg := storage.Config{

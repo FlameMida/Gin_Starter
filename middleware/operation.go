@@ -24,7 +24,7 @@ func Operations() gin.HandlerFunc {
 			var err error
 			body, err = ioutil.ReadAll(c.Request.Body)
 			if err != nil {
-				global.LOG.Error("read body from request error:", zap.Any("err", err))
+				global.LOG.Error("read body from request error:", zap.Error(err))
 			} else {
 				c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 			}
@@ -36,8 +36,9 @@ func Operations() gin.HandlerFunc {
 			id, err := strconv.Atoi(c.Request.Header.Get("x-user-id"))
 			if err != nil {
 				userId = 0
+			} else {
+				userId = id
 			}
-			userId = id
 		}
 		record := system.Operations{
 			Ip:     c.ClientIP(),
@@ -61,14 +62,14 @@ func Operations() gin.HandlerFunc {
 
 		c.Next()
 
-		latency := time.Now().Sub(now)
+		latency := time.Since(now)
 		record.ErrorMessage = c.Errors.ByType(gin.ErrorTypePrivate).String()
 		record.Status = c.Writer.Status()
 		record.Latency = latency
 		record.Resp = writer.body.String()
 
 		if err := OperationsService.CreateOperations(record); err != nil {
-			global.LOG.Error("create operation record error:", zap.Any("err", err))
+			global.LOG.Error("create operation record error:", zap.Error(err))
 		}
 	}
 }

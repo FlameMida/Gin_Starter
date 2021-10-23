@@ -34,7 +34,7 @@ func (s *Api) CreateApi(c *gin.Context) {
 		return
 	}
 	if err := apiService.CreateApi(api); err != nil {
-		global.LOG.Error("创建失败!", zap.Any("err", err))
+		global.LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -58,7 +58,7 @@ func (s *Api) DeleteApi(c *gin.Context) {
 		return
 	}
 	if err := apiService.DeleteApi(api); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -82,7 +82,7 @@ func (s *Api) GetApiList(c *gin.Context) {
 		return
 	}
 	if err, list, total := apiService.GetAPIInfoList(pageInfo.Api, pageInfo.PageInfo, pageInfo.OrderKey, pageInfo.Desc); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.PageResult{
@@ -112,7 +112,7 @@ func (s *Api) GetApiById(c *gin.Context) {
 	}
 	err, api := apiService.GetApiById(idInfo.ID)
 	if err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithData(systemRes.SysAPIResponse{Api: api}, c)
@@ -136,7 +136,7 @@ func (s *Api) UpdateApi(c *gin.Context) {
 		return
 	}
 	if err := apiService.UpdateApi(api); err != nil {
-		global.LOG.Error("修改失败!", zap.Any("err", err))
+		global.LOG.Error("修改失败!", zap.Error(err))
 		response.FailWithMessage("修改失败", c)
 	} else {
 		response.OkWithMessage("修改成功", c)
@@ -153,7 +153,7 @@ func (s *Api) UpdateApi(c *gin.Context) {
 // @Router /api/getAllApis [post]
 func (s *Api) GetAllApis(c *gin.Context) {
 	if err, apis := apiService.GetAllApis(); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(systemRes.SysAPIListResponse{Apis: apis}, "获取成功", c)
@@ -173,7 +173,7 @@ func (s *Api) DeleteApisByIds(c *gin.Context) {
 	var ids request.IdsReq
 	_ = c.ShouldBindJSON(&ids)
 	if err := apiService.DeleteApisByIds(ids); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)

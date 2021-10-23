@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-//@author: Flame
-//@function: FileMove
-//@description: 文件移动供外部调用
-//@param: src string, dst string(src: 源位置,绝对路径or相对路径, dst: 目标位置,绝对路径or相对路径,必须为文件夹)
-//@return: err error
+// @author: Flame
+// @function: FileMove
+// @description: 文件移动供外部调用
+// @param: src string, dst string(src: 源位置,绝对路径or相对路径, dst: 目标位置,绝对路径or相对路径,必须为文件夹)
+// @return: err error
 
 func FileMove(src string, dst string) (err error) {
 	if dst == "" {
@@ -46,11 +46,11 @@ func DeLFile(filePath string) error {
 	return os.RemoveAll(filePath)
 }
 
-//@author: Flame
-//@function: TrimSpace
-//@description: 去除结构体空格
-//@param: target interface (target: 目标结构体,传入必须是指针类型)
-//@return: null
+// @author: Flame
+// @function: TrimSpace
+// @description: 去除结构体空格
+// @param: target interface (target: 目标结构体,传入必须是指针类型)
+// @return: null
 
 func TrimSpace(target interface{}) {
 	t := reflect.TypeOf(target)
@@ -65,5 +65,4 @@ func TrimSpace(target interface{}) {
 			v.Field(i).SetString(strings.TrimSpace(v.Field(i).String()))
 		}
 	}
-	return
 }

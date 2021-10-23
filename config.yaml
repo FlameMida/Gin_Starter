@@ -1,10 +1,10 @@
 aliyun-oss:
-  endpoint: yourEndpoint
-  access-key-id: yourAccessKeyId
-  access-key-secret: yourAccessKeySecret
-  bucket-name: yourBucketName
-  bucket-url: yourBucketUrl
-  base-path: yourBasePath
+  endpoint: Endpoint
+  access-key-id: AccessKeyId
+  access-key-secret: AccessKeySecret
+  bucket-name: BucketName
+  bucket-url: BucketUrl
+  base-path: BasePath
 captcha:
   key-long: 6
   img-width: 240
@@ -22,7 +22,7 @@ email:
 excel:
   dir: ./resource/excel/
 jwt:
-  signing-key: yourKeys
+  signing-key: Keys
   expires-time: 604800
   buffer-time: 86400
 local:
@@ -36,7 +36,7 @@ mysql:
   max-idle-conns: 0
   max-open-conns: 0
   log-mode: ""
-  log-zap: false
+  log-zap: true
 qiniu:
   zone: ZoneHuaDong
   bucket: ""
@@ -65,17 +65,17 @@ tencent-cos:
 timer:
   start: true
   spec: '@daily'
-  detail:
-  - tableName: operations
-    compareField: created_at
-    interval: 2160h
+  detail: [
+    { tableName: "sys_operation_records" , compareField: "created_at", interval: "2160h" }
+  ]
+
 zap:
   level: info
   format: console
   prefix: '[GIN-STARTER]'
   director: log
   link-name: latest_log
-  showLine: false
+  showLine: true
   encode-level: LowercaseColorLevelEncoder
   stacktrace-key: stacktrace
   log-in-console: true

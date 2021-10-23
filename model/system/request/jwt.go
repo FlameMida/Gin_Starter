@@ -13,5 +13,5 @@ type CustomClaims struct {
 	NickName    string
 	AuthorityId string
 	BufferTime  int64
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }

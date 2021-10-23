@@ -15,9 +15,8 @@ type Operations struct {
 }
 
 // CreateOperations
-//
 // @Tags Operations
-// @Summary 创建Operations
+// @Summary 创建操作记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -28,7 +27,7 @@ func (s *Operations) CreateOperations(c *gin.Context) {
 	var operations system.Operations
 	_ = c.ShouldBindJSON(&operations)
 	if err := operationsService.CreateOperations(operations); err != nil {
-		global.LOG.Error("创建失败!", zap.Any("err", err))
+		global.LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -38,7 +37,7 @@ func (s *Operations) CreateOperations(c *gin.Context) {
 // DeleteOperations
 //
 // @Tags Operations
-// @Summary 删除Operations
+// @Summary 删除操作记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -49,7 +48,7 @@ func (s *Operations) DeleteOperations(c *gin.Context) {
 	var operations system.Operations
 	_ = c.ShouldBindJSON(&operations)
 	if err := operationsService.DeleteOperations(operations); err != nil {
-		global.LOG.Error("删除失败!", zap.Any("err", err))
+		global.LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -58,7 +57,7 @@ func (s *Operations) DeleteOperations(c *gin.Context) {
 
 // DeleteOperationsByIds
 // @Tags Operations
-// @Summary 批量删除Operations
+// @Summary 批量删除操作记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -69,7 +68,7 @@ func (s *Operations) DeleteOperationsByIds(c *gin.Context) {
 	var IDS request.IdsReq
 	_ = c.ShouldBindJSON(&IDS)
 	if err := operationsService.DeleteOperationsByIds(IDS); err != nil {
-		global.LOG.Error("批量删除失败!", zap.Any("err", err))
+		global.LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -79,7 +78,7 @@ func (s *Operations) DeleteOperationsByIds(c *gin.Context) {
 // FindOperations
 //
 // @Tags Operations
-// @Summary 用id查询Operations
+// @Summary 用id查询操作记录
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -94,7 +93,7 @@ func (s *Operations) FindOperations(c *gin.Context) {
 		return
 	}
 	if err, reOperations := operationsService.GetOperations(operations.ID); err != nil {
-		global.LOG.Error("查询失败!", zap.Any("err", err))
+		global.LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithDetailed(gin.H{"reOperations": reOperations}, "查询成功", c)
@@ -104,7 +103,7 @@ func (s *Operations) FindOperations(c *gin.Context) {
 // GetOperationsList
 //
 // @Tags Operations
-// @Summary 分页获取Operations列表
+// @Summary 分页获取操作记录列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
@@ -115,7 +114,7 @@ func (s *Operations) GetOperationsList(c *gin.Context) {
 	var pageInfo systemReq.OperationsSearch
 	_ = c.ShouldBindQuery(&pageInfo)
 	if err, list, total := operationsService.GetOperationsInfoList(pageInfo); err != nil {
-		global.LOG.Error("获取失败!", zap.Any("err", err))
+		global.LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		response.OkWithDetailed(response.PageResult{

@@ -3,7 +3,12 @@ FROM golang:alpine
 WORKDIR /go/src/gin_starter
 COPY . .
 
-RUN go generate && go env && go build -o server .
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://goproxy.cn,direct
+RUN go env -w CGO_ENABLED=0
+RUN go env
+RUN go mod tidy
+RUN go build -o server .
 
 FROM alpine:latest
 

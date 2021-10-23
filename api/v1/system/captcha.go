@@ -31,7 +31,7 @@ func (b *Base) Captcha(c *gin.Context) {
 	driver := base64Captcha.NewDriverDigit(global.CONFIG.Captcha.ImgHeight, global.CONFIG.Captcha.ImgWidth, global.CONFIG.Captcha.KeyLong, 0.7, 80)
 	cp := base64Captcha.NewCaptcha(driver, store)
 	if id, b64s, err := cp.Generate(); err != nil {
-		global.LOG.Error("验证码获取失败!", zap.Any("err", err))
+		global.LOG.Error("验证码获取失败!", zap.Error(err))
 		response.FailWithMessage("验证码获取失败", c)
 	} else {
 		response.OkWithDetailed(systemRes.SysCaptchaResponse{

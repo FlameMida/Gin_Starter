@@ -2,7 +2,7 @@
 
 # jwt configuration
 jwt:
-  signing-key: 'yourKeys'
+  signing-key: 'Keys'
   expires-time: 604800
   buffer-time: 86400
 
@@ -81,11 +81,11 @@ qiniu:
 
 # aliyun oss configuration
 aliyun-oss:
-  endpoint: 'yourEndpoint'
-  access-key-id: 'yourAccessKeyId'
-  access-key-secret: 'yourAccessKeySecret'
-  bucket-name: 'yourBucketName'
-  bucket-url: 'yourBucketUrl'
+  endpoint: 'Endpoint'
+  access-key-id: 'AccessKeyId'
+  access-key-secret: 'AccessKeySecret'
+  bucket-name: 'BucketName'
+  bucket-url: 'BucketUrl'
 
 # tencent cos configuration
 tencent-cos:
@@ -106,10 +106,5 @@ Timer:
   start: true
   spec: "@daily"  # 定时任务详细配置参考 https://pkg.go.dev/github.com/robfig/cron/v3
   detail: [
-    # tableName: 需要清理的表名
-    # compareField: 需要比较时间的字段
-    # interval: 时间间隔, 具体配置详看 time.ParseDuration() 中字符串表示 且不能为负数
-    # 2160h = 24 * 30 * 3 -> 三个月
     { tableName: "operations" , compareField: "created_at", interval: "2160h" },
-    #{ tableName: "log2" , compareField: "created_at", interval: "2160h" }
   ]

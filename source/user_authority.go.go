@@ -12,10 +12,10 @@ var UserAuthority = new(userAuthority)
 type userAuthority struct{}
 
 var userAuthorityModel = []system.UserAuthority{
-	{1, "888"},
-	{1, "8881"},
-	{1, "9528"},
-	{2, "888"},
+	{UserId: 1, AuthorityAuthorityId: "888"},
+	{UserId: 1, AuthorityAuthorityId: "8881"},
+	{UserId: 1, AuthorityAuthorityId: "9528"},
+	{UserId: 2, AuthorityAuthorityId: "888"},
 }
 
 // Init @description: user_authority 数据初始化

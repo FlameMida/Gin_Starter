@@ -79,6 +79,9 @@ func (OperationsService *OperationsService) GetOperationsInfoList(info systemReq
 		db = db.Where("status = ?", info.Status)
 	}
 	err = db.Count(&total).Error
+	if err != nil {
+		return err, nil, 0
+	}
 	err = db.Order("id desc").Limit(limit).Offset(offset).Preload("User").Find(&operations).Error
 	return err, operations, total
 }
