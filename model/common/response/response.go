@@ -23,6 +23,7 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 		data,
 		msg,
 	})
+	return
 }
 
 func Ok(c *gin.Context) {

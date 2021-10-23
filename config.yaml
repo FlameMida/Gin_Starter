@@ -28,15 +28,15 @@ jwt:
 local:
   path: uploads/file
 mysql:
-  path: ''
+  path: 127.0.0.1:3306
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db-name: ''
-  username: ''
-  password: ''
+  db-name: adminer
+  username: root
+  password: root
   max-idle-conns: 0
   max-open-conns: 0
   log-mode: ""
-  log-zap: true
+  log-zap: false
 qiniu:
   zone: ZoneHuaDong
   bucket: ""
@@ -65,17 +65,17 @@ tencent-cos:
 timer:
   start: true
   spec: '@daily'
-  detail: [
-    { tableName: "sys_operation_records" , compareField: "created_at", interval: "2160h" }
-  ]
-
+  detail:
+  - tableName: sys_operation_records
+    compareField: created_at
+    interval: 2160h
 zap:
   level: info
   format: console
   prefix: '[GIN-STARTER]'
   director: log
   link-name: latest_log
-  showLine: true
+  showLine: false
   encode-level: LowercaseColorLevelEncoder
   stacktrace-key: stacktrace
   log-in-console: true

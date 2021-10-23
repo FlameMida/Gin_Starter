@@ -5,7 +5,6 @@ type RouterGroup struct {
 	AuthorityRouter
 	BaseRouter
 	CasbinRouter
-	EmailRouter
 	InitRouter
 	JwtRouter
 	MenuRouter

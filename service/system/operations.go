@@ -7,11 +7,11 @@ import (
 	systemReq "gin-starter/model/system/request"
 )
 
-//@author: Flame
-//@function: CreateOperations
-//@description: 创建记录
-//@param: operations model.Operations
-//@return: err error
+// @author: Flame
+// @function: CreateOperations
+// @description: 创建记录
+// @param: operations model.Operations
+// @return: err error
 
 type OperationsService struct {
 }
@@ -21,46 +21,46 @@ func (OperationsService *OperationsService) CreateOperations(operations system.O
 	return err
 }
 
-//@author: Flame
-//@author: Flame
-//@function: DeleteOperationsByIds
-//@description: 批量删除记录
-//@param: ids request.IdsReq
-//@return: err error
+// @author: Flame
+// @author: Flame
+// @function: DeleteOperationsByIds
+// @description: 批量删除记录
+// @param: ids request.IdsReq
+// @return: err error
 
 func (OperationsService *OperationsService) DeleteOperationsByIds(ids request.IdsReq) (err error) {
 	err = global.DB.Delete(&[]system.Operations{}, "id in (?)", ids.Ids).Error
 	return err
 }
 
-//@author: Flame
-//@function: DeleteOperations
-//@description: 删除操作记录
-//@param: operations model.Operations
-//@return: err error
+// @author: Flame
+// @function: DeleteOperations
+// @description: 删除操作记录
+// @param: operations model.Operations
+// @return: err error
 
 func (OperationsService *OperationsService) DeleteOperations(operations system.Operations) (err error) {
 	err = global.DB.Delete(&operations).Error
 	return err
 }
 
-//@author: Flame
-//@function: DeleteOperations
-//@description: 根据id获取单条操作记录
-//@param: id uint
-//@return: err error, operations model.Operations
+// @author: Flame
+// @function: DeleteOperations
+// @description: 根据id获取单条操作记录
+// @param: id uint
+// @return: err error, operations model.Operations
 
 func (OperationsService *OperationsService) GetOperations(id uint) (err error, operations system.Operations) {
 	err = global.DB.Where("id = ?", id).First(&operations).Error
 	return
 }
 
-//@author: Flame
-//@author: Flame
-//@function: GetOperationsInfoList
-//@description: 分页获取操作记录列表
-//@param: info systemReq.OperationsSearch
-//@return: err error, list interface{}, total int64
+// @author: Flame
+// @author: Flame
+// @function: GetOperationsInfoList
+// @description: 分页获取操作记录列表
+// @param: info systemReq.OperationsSearch
+// @return: err error, list interface{}, total int64
 
 func (OperationsService *OperationsService) GetOperationsInfoList(info systemReq.OperationsSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
