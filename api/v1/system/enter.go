@@ -18,7 +18,6 @@ var authorityService = service.AppService.SystemService.AuthorityService
 var apiService = service.AppService.SystemService.ApiService
 var menuService = service.AppService.SystemService.MenuService
 var casbinService = service.AppService.SystemService.CasbinService
-var emailService = service.AppService.SystemService.EmailService
 var initDBService = service.AppService.SystemService.InitDBService
 var jwtService = service.AppService.SystemService.JwtService
 var baseMenuService = service.AppService.SystemService.BaseMenuService
